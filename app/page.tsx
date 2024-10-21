@@ -8,47 +8,51 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Search } from "lucide-react";
+import { fetchBooks } from "./lib/data";
 
-export default function Home() {
+export default async function Home() {
   // Mock data for books
-  const books = [
-    {
-      id: 1,
-      title: "To Kill a Mockingbird",
-      author: "Harper Lee",
-      cover: "/placeholder.svg?height=200&width=150",
-    },
-    {
-      id: 2,
-      title: "1984",
-      author: "George Orwell",
-      cover: "/placeholder.svg?height=200&width=150",
-    },
-    {
-      id: 3,
-      title: "Pride and Prejudice",
-      author: "Jane Austen",
-      cover: "/placeholder.svg?height=200&width=150",
-    },
-    {
-      id: 4,
-      title: "The Great Gatsby",
-      author: "F. Scott Fitzgerald",
-      cover: "/placeholder.svg?height=200&width=150",
-    },
-    {
-      id: 5,
-      title: "Moby Dick",
-      author: "Herman Melville",
-      cover: "/placeholder.svg?height=200&width=150",
-    },
-    {
-      id: 6,
-      title: "The Catcher in the Rye",
-      author: "J.D. Salinger",
-      cover: "/placeholder.svg?height=200&width=150",
-    },
-  ];
+  // const books = [
+  //   {
+  //     id: 1,
+  //     title: "To Kill a Mockingbird",
+  //     author: "Harper Lee",
+  //     cover: "/placeholder.svg?height=200&width=150",
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "1984",
+  //     author: "George Orwell",
+  //     cover: "/placeholder.svg?height=200&width=150",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Pride and Prejudice",
+  //     author: "Jane Austen",
+  //     cover: "/placeholder.svg?height=200&width=150",
+  //   },
+  //   {
+  //     id: 4,
+  //     title: "The Great Gatsby",
+  //     author: "F. Scott Fitzgerald",
+  //     cover: "/placeholder.svg?height=200&width=150",
+  //   },
+  //   {
+  //     id: 5,
+  //     title: "Moby Dick",
+  //     author: "Herman Melville",
+  //     cover: "/placeholder.svg?height=200&width=150",
+  //   },
+  //   {
+  //     id: 6,
+  //     title: "The Catcher in the Rye",
+  //     author: "J.D. Salinger",
+  //     cover: "/placeholder.svg?height=200&width=150",
+  //   },
+  // ];
+
+  const books = await fetchBooks();
+  console.log(books);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -108,7 +112,7 @@ export default function Home() {
                 <CardTitle className="text-lg font-semibold mb-2">
                   {book.title}
                 </CardTitle>
-                <p className="text-sm text-gray-600">{book.author}</p>
+                <p className="text-sm text-gray-600">{book.authourFirstName}</p>
               </CardContent>
               <CardFooter className="bg-gray-50 p-4">
                 <Button className="w-full">Reserve</Button>
