@@ -7,8 +7,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Search } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Search, Plus } from "lucide-react";
 import { fetchBooks } from "./lib/data";
+import Form from "@/app/ui/create-form";
 
 export default async function Home() {
   // Mock data for books
@@ -84,8 +92,8 @@ export default async function Home() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <div className="relative">
+        <div className="mb-8 flex justify-between items-center">
+          <div className="relative flex-grow mr-4">
             <Input
               type="search"
               placeholder="Search for books..."
@@ -96,6 +104,21 @@ export default async function Home() {
               size={20}
             />
           </div>
+
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="flex items-center">
+                <Plus className="mr-2" size={20} />
+                Add Book
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Add New Book</DialogTitle>
+              </DialogHeader>
+              <Form />
+            </DialogContent>
+          </Dialog>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -112,7 +135,7 @@ export default async function Home() {
                 <CardTitle className="text-lg font-semibold mb-2">
                   {book.title}
                 </CardTitle>
-                <p className="text-sm text-gray-600">{book.authourFirstName}</p>
+                <p className="text-sm text-gray-600">{book.author}</p>
               </CardContent>
               <CardFooter className="bg-gray-50 p-4">
                 <Button className="w-full">Reserve</Button>
