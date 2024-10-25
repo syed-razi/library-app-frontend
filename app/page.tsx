@@ -14,51 +14,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Search, Plus } from "lucide-react";
+import { Search, Plus, Edit } from "lucide-react";
 import { fetchBooks } from "./lib/data";
 import Form from "@/app/ui/create-form";
+import DeleteBook from "./ui/delete-book";
+import EditBook from "./ui/edit-book";
 
 export default async function Home() {
-  // Mock data for books
-  // const books = [
-  //   {
-  //     id: 1,
-  //     title: "To Kill a Mockingbird",
-  //     author: "Harper Lee",
-  //     cover: "/placeholder.svg?height=200&width=150",
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "1984",
-  //     author: "George Orwell",
-  //     cover: "/placeholder.svg?height=200&width=150",
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "Pride and Prejudice",
-  //     author: "Jane Austen",
-  //     cover: "/placeholder.svg?height=200&width=150",
-  //   },
-  //   {
-  //     id: 4,
-  //     title: "The Great Gatsby",
-  //     author: "F. Scott Fitzgerald",
-  //     cover: "/placeholder.svg?height=200&width=150",
-  //   },
-  //   {
-  //     id: 5,
-  //     title: "Moby Dick",
-  //     author: "Herman Melville",
-  //     cover: "/placeholder.svg?height=200&width=150",
-  //   },
-  //   {
-  //     id: 6,
-  //     title: "The Catcher in the Rye",
-  //     author: "J.D. Salinger",
-  //     cover: "/placeholder.svg?height=200&width=150",
-  //   },
-  // ];
-
   const books = await fetchBooks();
   console.log(books);
 
@@ -138,7 +100,23 @@ export default async function Home() {
                 <p className="text-sm text-gray-600">{book.author}</p>
               </CardContent>
               <CardFooter className="bg-gray-50 p-4">
-                <Button className="w-full">Reserve</Button>
+                <Button className="flex-grow mr-2">Reserve</Button>
+                <div className="flex space-x-2">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="outline">
+                        <Edit size={20} />
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Edit Book</DialogTitle>
+                      </DialogHeader>
+                      <EditBook {...book} />
+                    </DialogContent>
+                  </Dialog>
+                  <DeleteBook id={book.id} />
+                </div>
               </CardFooter>
             </Card>
           ))}
