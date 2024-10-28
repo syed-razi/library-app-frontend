@@ -38,7 +38,7 @@ export default function Form() {
         </div>
       </div>
       <div className="flex items-center justify-end gap-4">
-        <Submit {...state} />
+        <Submit {...state} text="Add Book" pendingText="Adding Book..." />
       </div>
     </form>
   );

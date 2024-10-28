@@ -41,7 +41,7 @@ export async function createBook(prevState, formData) {
   }
 }
 
-export async function updateBook(id, formData) {
+export async function updateBook(id, prevState, formData) {
   const updatedFormData = {
     title: formData.get("edit-title"),
     author: formData.get("edit-author"),
@@ -68,15 +68,23 @@ export async function updateBook(id, formData) {
       `Book with ID ${id} updated successfully:`,
       await response.json()
     );
+    revalidatePath("/");
+
+    return {
+      status: "success",
+      message: "Saved changes successfully!",
+    };
   } catch (error) {
     console.error("Error updating book:", error);
-    throw new Error(`Failed to update book with ID ${id}`);
+    console.error(`Failed to update book with ID ${id}`);
+    return {
+      status: "error",
+      message: "Database Error: Failed to Update Book",
+    };
   }
-  revalidatePath("/");
-  redirect("/");
 }
 
-export async function deleteBook(id) {
+export async function deleteBook(id, title, prevState) {
   try {
     const response = await fetch(`http://localhost:8080/books/${id}`, {
       method: "DELETE",
@@ -88,13 +96,18 @@ export async function deleteBook(id) {
     if (!response.ok) {
       throw new Error(`Failed to delete book with ID ${id}`);
     }
+
+    console.log(
+      `Book with ID ${id} deleted successfully:`,
+      await response.json()
+    );
     revalidatePath("/");
 
     return {
       success: true,
-      message: `Book with ID ${id} deleted successfully`,
+      message: `${title} deleted successfully`,
     };
   } catch (error) {
-    return { success: false, message: error.message };
+    return { success: false, message: `Error: Unable to delete ${title}` };
   }
 }

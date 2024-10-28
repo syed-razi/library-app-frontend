@@ -115,7 +115,7 @@ export default async function Home() {
                       <EditBook {...book} />
                     </DialogContent>
                   </Dialog>
-                  <DeleteBook id={book.id} />
+                  <DeleteBook id={book.id} title={book.title} />
                 </div>
               </CardFooter>
             </Card>
