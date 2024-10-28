@@ -5,11 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { updateBook } from "@/app/lib/actions";
 import { useFormState } from "react-dom";
-import Submit from "./add-book-button";
+import Submit from "./submit-button";
 
 export default function EditBook({ id, title, author }) {
   const updateBookWithId = updateBook.bind(null, id);
-  const initialState = { status: null, message: null };
+  const initialState = { success: null, message: null };
   const [state, formAction] = useFormState(updateBookWithId, initialState);
 
   return (

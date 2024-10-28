@@ -4,17 +4,17 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { createBook } from "@/app/lib/actions";
 import { useFormState } from "react-dom";
-import Submit from "./add-book-button";
+import Submit from "./submit-button";
 import { useRef } from "react";
 
 export default function Form() {
-  const initialState = { status: null, message: null };
+  const initialState = { success: null, message: null };
   const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
   const [state, formAction] = useFormState(async (prevState, formData) => {
     const result = await createBook(prevState, formData);
 
     // Reset form if submission was successful
-    if (result.status === "success") {
+    if (result.success) {
       formRef.current?.reset();
     }
 

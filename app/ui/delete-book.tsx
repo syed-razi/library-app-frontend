@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function DeleteBook({ id, title }) {
   const deleteBookWithId = deleteBook.bind(null, id, title);
-  const initialState = { status: null, message: null };
+  const initialState = { success: null, message: null };
   const { toast } = useToast();
   const [state, formAction] = useFormState(async (id, prevState) => {
     const result = await deleteBookWithId(prevState);
@@ -18,7 +18,6 @@ export default function DeleteBook({ id, title }) {
       description: result.message,
     });
   }, initialState);
-  console.log(state);
 
   return (
     <form action={formAction}>

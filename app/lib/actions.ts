@@ -8,9 +8,8 @@ export async function createBook(prevState, formData) {
     title: formData.get("title"),
     author: formData.get("author"),
   };
-  console.log("Submitting book data to Spring:", rawFormData);
+  console.log("Creating new book:", rawFormData);
 
-  // Send a POST request to your Spring Data REST API
   try {
     const response = await fetch("http://localhost:8080/books", {
       method: "POST",
@@ -20,22 +19,22 @@ export async function createBook(prevState, formData) {
       body: JSON.stringify(rawFormData),
     });
 
-    // Check if the response was successful
     if (!response.ok) {
-      throw new Error("Failed to create the book");
+      throw new Error("Failed to create book");
     }
 
-    console.log("Book created successfully:", await response.json());
+    const result = await response.json();
+    console.log("Book created successfully:", result);
     revalidatePath("/");
 
     return {
-      status: "success",
+      success: true,
       message: "Book created successfully!",
     };
   } catch (error) {
     console.error("Error creating book:", error);
     return {
-      status: "error",
+      success: false,
       message: "Database Error: Failed to Create Book",
     };
   }
@@ -46,10 +45,8 @@ export async function updateBook(id, prevState, formData) {
     title: formData.get("edit-title"),
     author: formData.get("edit-author"),
   };
+  console.log("Updating book:", { id, ...updatedFormData });
 
-  console.log("Updating book with ID:", id);
-
-  // Send a PUT request to your Spring Data REST API to update the book
   try {
     const response = await fetch(`http://localhost:8080/books/${id}`, {
       method: "PUT",
@@ -59,32 +56,30 @@ export async function updateBook(id, prevState, formData) {
       body: JSON.stringify(updatedFormData),
     });
 
-    // Check if the response was successful
     if (!response.ok) {
-      throw new Error(`Failed to update book with ID ${id}`);
+      throw new Error("Failed to update book");
     }
 
-    console.log(
-      `Book with ID ${id} updated successfully:`,
-      await response.json()
-    );
+    const result = await response.json();
+    console.log("Book updated successfully:", result);
     revalidatePath("/");
 
     return {
-      status: "success",
+      success: true,
       message: "Saved changes successfully!",
     };
   } catch (error) {
     console.error("Error updating book:", error);
-    console.error(`Failed to update book with ID ${id}`);
     return {
-      status: "error",
+      success: false,
       message: "Database Error: Failed to Update Book",
     };
   }
 }
 
 export async function deleteBook(id, title, prevState) {
+  console.log("Deleting book:", { id, title });
+
   try {
     const response = await fetch(`http://localhost:8080/books/${id}`, {
       method: "DELETE",
@@ -94,13 +89,11 @@ export async function deleteBook(id, title, prevState) {
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to delete book with ID ${id}`);
+      throw new Error("Failed to delete book");
     }
 
-    console.log(
-      `Book with ID ${id} deleted successfully:`,
-      await response.json()
-    );
+    const result = await response.json();
+    console.log("Book deleted successfully:", result);
     revalidatePath("/");
 
     return {
@@ -108,6 +101,10 @@ export async function deleteBook(id, title, prevState) {
       message: `${title} deleted successfully`,
     };
   } catch (error) {
-    return { success: false, message: `Error: Unable to delete ${title}` };
+    console.error("Error deleting book:", error);
+    return {
+      success: false,
+      message: `Database Error: Failed to Delete ${title}`,
+    };
   }
 }
