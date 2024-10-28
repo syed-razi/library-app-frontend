@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-export async function createBook(formData) {
+export async function createBook(prevState, formData) {
   const rawFormData = {
     title: formData.get("title"),
     author: formData.get("author"),
@@ -26,12 +26,19 @@ export async function createBook(formData) {
     }
 
     console.log("Book created successfully:", await response.json());
+    revalidatePath("/");
+
+    return {
+      status: "success",
+      message: "Book created successfully!",
+    };
   } catch (error) {
     console.error("Error creating book:", error);
-    throw new Error("Failed to submit the book.");
+    return {
+      status: "error",
+      message: "Database Error: Failed to Create Book",
+    };
   }
-  revalidatePath("/");
-  redirect("/");
 }
 
 export async function updateBook(id, formData) {
