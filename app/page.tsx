@@ -22,7 +22,6 @@ import EditBook from "./ui/edit-book";
 
 export default async function Home() {
   const books = await fetchBooks();
-  console.log(books);
 
   return (
     <div className="min-h-screen bg-gray-100">

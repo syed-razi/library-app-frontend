@@ -1,9 +1,15 @@
 import { Button } from "@/components/ui/button";
-import { useFormStatus } from "react-dom";
+// import { useFormStatus } from "react-dom";
 import { Loader2 } from "lucide-react";
 
-export default function Submit({ success, message, text, pendingText }) {
-  const { pending } = useFormStatus();
+export default function Submit({
+  success,
+  message,
+  text,
+  pendingText,
+  pending,
+}) {
+  // const { pending } = useFormStatus();
   return (
     <>
       {!pending && message && (

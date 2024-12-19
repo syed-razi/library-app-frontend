@@ -3,23 +3,25 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { createBook } from "@/app/lib/actions";
-import { useFormState } from "react-dom";
 import Submit from "./submit-button";
-import { useRef } from "react";
+import { useRef, useActionState } from "react";
 
 export default function Form() {
   const initialState = { success: null, message: null };
   const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
-  const [state, formAction] = useFormState(async (prevState, formData) => {
-    const result = await createBook(prevState, formData);
+  const [state, formAction, isPending] = useActionState(
+    async (prevState, formData) => {
+      const result = await createBook(prevState, formData);
 
-    // Reset form if submission was successful
-    if (result.success) {
-      formRef.current?.reset();
-    }
+      // Reset form if submission was successful
+      if (result.success) {
+        formRef.current?.reset();
+      }
 
-    return result;
-  }, initialState);
+      return result;
+    },
+    initialState
+  );
 
   return (
     <form ref={formRef} action={formAction}>
@@ -38,7 +40,12 @@ export default function Form() {
         </div>
       </div>
       <div className="flex items-center justify-end gap-4">
-        <Submit {...state} text="Add Book" pendingText="Adding Book..." />
+        <Submit
+          {...state}
+          text="Add Book"
+          pendingText="Adding Book..."
+          pending={isPending}
+        />
       </div>
     </form>
   );

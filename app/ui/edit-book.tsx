@@ -4,13 +4,16 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { updateBook } from "@/app/lib/actions";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 import Submit from "./submit-button";
 
 export default function EditBook({ id, title, author }) {
   const updateBookWithId = updateBook.bind(null, id);
   const initialState = { success: null, message: null };
-  const [state, formAction] = useFormState(updateBookWithId, initialState);
+  const [state, formAction, isPending] = useActionState(
+    updateBookWithId,
+    initialState
+  );
 
   return (
     <form action={formAction}>
@@ -43,6 +46,7 @@ export default function EditBook({ id, title, author }) {
           {...state}
           text="Save Changes"
           pendingText="Saving Changes..."
+          pending={isPending}
         />
       </div>
     </form>
